@@ -1,4 +1,4 @@
-version: "3"
+version: "latest"
 services:
   prometheus:
     image: prom/prometheus:latest
@@ -6,14 +6,14 @@ services:
     command: --web.enable-lifecycle --config.file=/etc/prometheus/prometheus.yml
     ports:
       - 9090:9090
-  volumes:
-  - ./prometheus:/etc/prometheus
-  - prometheus-data:/prometheus
+    volumes:
+    - ./prometheus:/etc/prometheus
+    - prometheus-data:/prometheus
   networks:
-      mkuznetsov-my-netology-hw:
+      kuznetsov-my-netology-hw:
         ipv4_address: 10.5.0.1
 networks:
-  mkuznetsov-my-netology-hw:
+  kuznetsov-my-netology-hw:
     ipam:
       config:
         - subnet: 10.5.0.0/16
