@@ -8,9 +8,9 @@ services:
       - 9090:9090
     volumes:
     - ./prometheus:/home/vitaliy/REPOS/Docker/prometheus
-    - prometheus-data:/prometheus
+   # - prometheus-data:/prometheus
   networks:
-      kuznetsov-my-netology-hw:
+        kuznetsov-my-netology-hw:
         ipv4_address: 10.5.0.1
 networks:
   kuznetsov-my-netology-hw:
