@@ -9,16 +9,25 @@ services:
     volumes:
     - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
    # - prometheus-data:/prometheus
-   pushgateway:
-    job_name: 'kuznetsov-v-g-netology-pushgateway'
-    honor_labels: true
-    static_configs:
-      - targets: ["pushgateway:9091"]
+  pushgateway:
+    image: prom/pushgateway:v1.6.2
+    container_name: kuznetsov-v-g-netology-pushgateway
+    ports:
+      - 9091:9091
+    networks:
+      kuznetsov-my-netology-hw:
+        ipv4_address: 10.0.2.16
+    depends_on:
+      - prometheus
+    restart: unless-stopped    
 networks:
-  kuznetsov-my-netology-hw:
-  # ipv4_address: back-tier #10.0.2.16
-#networks:
-#  kuznetsov-my-netology-hw:
-#    ipam:
-#      config:
-#        - subnet: 10.5.0.0/16
+ kuznetsov-my-netology-hw:
+  driver: nat
+  ipam:
+    config:
+      - subnet: 10.0.2.0/16
+        gateway: 10.0.2.1
+      #  kuznetsov-my-netology-hw:
+ #   ipam:
+ #     config:
+  #     - subnet: 10.0.2.0/16
