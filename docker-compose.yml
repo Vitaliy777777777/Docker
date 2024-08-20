@@ -1,14 +1,17 @@
 version: "latest"
+volumes:
+  prometheus-data: {}   
+  grafana-data: {}
 services:
   prometheus:
     image: prom/prometheus:latest
     container_name: kuznetsov-v-g-netology-prometheus
-    command: --web.enable-lifecycle --config.file=/home/vitaliy/REPOS/Docker/sdvps-homeworks/Prometheus/Docker/prometheus.yml
+    command: --web.enable-lifecycle --config.file=/home/vitaliy/REPOS/Docker/sdvps-homeworks/Prometheus/Docker/prometheus.yaml
     ports:
       - 9090:9090
     volumes:
-    - ./prometheus/prometheus.yml:/home/vitaliy/REPOS/Docker/sdvps-homeworks/Prometheus/Docker/prometheus.yml
-   # - prometheus-data:/prometheus
+    - ./prometheus.yaml:/home/vitaliy/REPOS/Docker/sdvps-homeworks/Prometheus/Docker/prometheus.yaml
+    - prometheus-data:/prometheus
   pushgateway:
     image: prom/pushgateway:v1.6.2
     container_name: kuznetsov-v-g-netology-pushgateway
@@ -27,6 +30,22 @@ networks:
     config:
       - subnet: 10.0.2.0/16
         gateway: 10.0.2.1
+  grafana:
+    image: grafana/grafana
+    container_name: kuznetsov-v-g-netology-grafana
+    environment:
+      GF_PATHS_CONFIG: /etc/grafana/custom.ini
+    ports:
+      - 80:3000
+    volumes:
+      - ./grafana:/etc/grafana
+      - grafana-data:/var/lib/grafana
+    networks:
+      - kuznetsov-my-netology-hw
+    depends_on:
+      - prometheus
+      - pushgateway
+    restart: unless-stopped
       #  kuznetsov-my-netology-hw:
  #   ipam:
  #     config:
